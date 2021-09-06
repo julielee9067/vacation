@@ -1,0 +1,102 @@
+{% extends 'core/bootstrap.html' %}
+
+{% load static %}
+{% load templatehelpers %}
+{% load bootstrap4 %}
+{% load active_link_tags %}
+
+{% block bootstrap4_title %}
+    ISDS
+{% endblock %}
+
+{% block bootstrap4_extra_head %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.0/src/js.cookie.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/main.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/js/tempusdominus-bootstrap-4.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous" />
+{% endblock %}
+
+{% block bootstrap4_before_content %}
+    <div>
+        <nav class="navbar navbar-dark navbar-expand-md bg-dark">
+            <div class="container-fluid">
+                <a href="{% url 'core:index' %}" class="navbar-brand">ISDS</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {% active_link 'core:index' strict=True %}" href="{% url 'core:index' %}">홈</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% active_link 'core:attendance_list' strict=True %}" href="{% url 'core:attendance_list' %}">나의 출근기록</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% active_link 'core:attendance_add' strict=True %}" href="{% url 'core:attendance_add' %}">체크인</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% active_link 'vacation:index' strict=True %}" href="{% url 'vacation:index' %}">휴가</a>
+                        </li>
+                        {% if user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link {% active_link 'vacation:manage' strict=True %}" href="{% url 'vacation:manage' %}">휴가 관리</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="navbar-nav">
+                        {% if not user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">로그인</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'password_change' %}">비밀번호 변경</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">로그아웃</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block bootstrap4_content %}
+    <div class="container" style="padding: 0;">
+        <div class="row">
+            <div class="col">
+                {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+                <h2 class="title">
+                    {% block title %}
+                    {% endblock %}
+                </h2>
+                <div id="main">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+    <!-- MDB core JavaScript -->
+    {#    <script type="text/javascript"#}
+    {#            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/js/mdb.min.js"></script>#}
+{% endblock %}
+
+{% block bootstrap4_after_content %}
+    <div class="footer bg-light">
+        <div class="container pt-3 pb-3">
+            <div id="footer_content" class="text-center">
+                Alluser.net Corp. & Sogang ISDS Lab © 2016 ~ 2021 All rights reserved.
+            </div>
+        </div>
+    </div>
+{% endblock %}

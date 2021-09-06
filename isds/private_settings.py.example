@@ -1,0 +1,39 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'database',
+        'USER': 'yourid',
+        'PASSWORD': 'yourpassword',
+        'HOST': 'ipaddress',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES", innodb_strict_mode=1',
+            'charset': 'utf8mb4',
+        },
+    }
+}
+
+# Debug 모드
+DEBUG = True
+
+# Django Secret key 값을 입력
+SECRET_KEY = ''
+
+# Sentry에서 발급한 DSN 값을 입력
+SENTRY_DSN = ''
+
+# ALLOWED_HOSTS 에 추가할 값을 리스트 객체로 입력. (호스트의 아이피 또는 웹 주소)
+MY_HOSTS = ['163.239.28.23']
+
+# ALLOWED_CLIENT_IPS 에 추가할 값을 리스트 객체로 입력. (클라이언트의 아이피 주소, 빈 리스트일 경우 모두 허용)
+MY_CLIENT_IPS = ['']
+
+# SLACK Webhook Legay Token을 입력.
+# https://api.slack.com/custom-integrations/legacy-tokens
+SLACK_TOKEN = ''
+
+# 일반 메시지 알림채널
+SLACK_CHANNEL = None
+
+# 휴가신청 알림채널
+SLACK_VACATION_CHANNEL = None

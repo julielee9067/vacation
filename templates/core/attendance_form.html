@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+
+{% load templatehelpers %}
+{% load widget_tweaks %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+    <div class="card card-body col-md-6 mx-auto">
+        <h2 class="text-center mt-1 mb-4">체크인</h2>
+        <form method='post' action='' enctype="multipart/form-data">
+            {% csrf_token %}
+            {#            {{ form|crispy }}#}
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+                <div class="form-group row">
+                    <label class="col-sm-4">{{ field.label_tag }}</label>
+                    <div class="col-sm-8">
+                        {% if form.is_bound %}
+                            {% if field.errors %}
+                                {% render_field field class="form-control is-invalid" %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {% render_field field class="form-control is-valid" %}
+                            {% endif %}
+                        {% else %}
+                            {% render_field field class="form-control" %}
+                        {% endif %}
+
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                오늘 하루도 화이팅. 출퇴근 체크인을 눌러주세요!
+            </div>
+            <div class="form-group text-center mt-5">
+                <button type="submit" name="checkin" value='checkin' class="btn btn-primary">체크인</button>
+                <button type="submit" name="checkout" value= 'checkout' class="btn btn-secondary ml-3">체크아웃</button>
+            </div>
+
+            {#        <div class="text-center">#}
+            {#            <button type="submit" class="btn btn-primary">저장</button>#}
+            {#        </div>#}
+        </form>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    휴가 관리
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <ul class="list-group">
+                        <a class="list-group-item list-group-item-action" href="{% url 'vacation:admin' %}">승인할 목록</a>
+                        <a class="list-group-item list-group-item-action" href="{% url 'vacation:sick' %}">병가 등록</a>
+                        <a class="list-group-item list-group-item-action" href="{% url 'vacation:member_list' %}">직원 휴가 조회</a>
+                        <a class="list-group-item list-group-item-action" href="{% url 'vacation:users_vacation' %}">직원 휴가 개수 변경</a>
+                    </ul>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

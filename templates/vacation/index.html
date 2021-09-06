@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    휴가
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {% if user.is_authenticated %}
+                <ul class="list-group mb-3">
+                    <a class="list-group-item list-group-item-action" href="{% url 'vacation:register' %}">휴가 신청</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'vacation:list' user.id %}">신청 내역 조회</a>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

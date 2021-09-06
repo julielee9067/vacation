@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% load templatehelpers %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {% if user.is_authenticated %}
+                <ul class="list-group">
+                    <a class="list-group-item list-group-item-action" href="{% url 'core:attendance_list' %}">나의 출근기록</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'core:attendance_add' %}">체크인</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'vacation:index' %}">휴가</a>
+                    {% if user.is_superuser %}
+                        <a class="list-group-item list-group-item-action" href="{% url 'vacation:manage' %}">휴가 관리</a>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <ul class="list-group">
+                    <a class="list-group-item list-group-item-action" href="{% url 'login' %}">로그인</a>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

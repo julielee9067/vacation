@@ -1,0 +1,222 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    휴가 신청 폼
+{% endblock %}
+
+{% block content %}
+    {{ form.media }}
+    <div style="margin-bottom: 10px">
+        <label for="dayOff" style="margin-right: 5px;">연차</label>
+        <input checked id="dayOff" name="vacationType" type="radio" value="dayOff">
+        <label for="dayOff" style="margin-left: 10px; margin-right: 5px">병가</label>
+        <input id="dayOff" name="vacationType" type="radio" value="sickDayOff">
+        <label for="dayOff" style="margin-left: 10px; margin-right: 5px">대체 휴가</label>
+        <input id="dayOff" name="vacationType" type="radio" value="compDayOff">
+        <label for="halfDayOff" style="margin-left: 10px; margin-right: 5px">반차</label>
+        <input type="radio" id="halfDayOff" name="vacationType" value="halfDayOff">
+        <label for="oneFourthDayOff" style="margin-left: 10px; margin-right: 5px">반반차</label>
+        <input type="radio" id="oneFourthDayOff" name="vacationType" value="oneFourthDayOff">
+    </div>
+
+    <form id="adminDayOffForm" action="" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.label == '직원' %}
+                <div class="form-group">
+                    <div>{{ field.label }}</div>
+                    {{ field }}
+                </div>
+            {% elif field.label == '구분' %}
+                <div class="form-group" style="display: none">
+                    <label for="id_cat"></label>
+                    <input id="id_cat" type="text" name="cat" value="1">
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="d-flex flex-wrap mb-3">
+            <input id="day_off_start_at" type="date" name="day_off_start_at" class="form-control w-25">
+            <label for="day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="day_off_end_at" type="date" name="day_off_end_at" class="form-control w-25">
+            <label for="day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="dayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminSickDayOffForm" action="" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.label == '직원' %}
+                <div class="form-group">
+                    <div>{{ field.label }}</div>
+                    {{ field }}
+                </div>
+            {% elif field.label == '구분' %}
+                <div class="form-group" style="display: none">
+                    <label for="id_cat"></label>
+                    <input id="id_cat" type="text" name="cat" value="2">
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="d-flex flex-wrap mb-3">
+            <input id="sick_day_off_start_at" type="date" name="sick_day_off_start_at" class="form-control w-25">
+            <label for="sick_day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="sick_day_off_end_at" type="date" name="sick_day_off_end_at" class="form-control w-25">
+            <label for="sick_day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="sickDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminCompDayOffForm" action="" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.label == '직원' %}
+                <div class="form-group">
+                    <div>{{ field.label }}</div>
+                    {{ field }}
+                </div>
+            {% elif field.label == '구분' %}
+                <div class="form-group" style="display: none">
+                    <label for="id_cat"></label>
+                    <input id="id_cat" type="text" name="cat" value="5">
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="d-flex flex-wrap mb-3">
+            <input id="comp_day_off_start_at" type="date" name="comp_day_off_start_at" class="form-control w-25">
+            <label for="comp_day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="comp_day_off_end_at" type="date" name="comp_day_off_end_at" class="form-control w-25">
+            <label for="comp_day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="compDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminHalfDayOffForm" action="" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.label == '직원' %}
+                <div class="form-group">
+                    <div>{{ field.label }}</div>
+                    {{ field }}
+                </div>
+            {% elif field.label == '구분' %}
+                <div class="form-group" style="display: none">
+                    <label for="id_cat"></label>
+                    <input id="id_cat" type="text" name="cat" value="3">
+                </div>
+            {% endif %}
+        {% endfor %}
+        <label style="font-weight: bold">시작 일시</label>
+        <p style="font-size: small; color: red">* 반차는 시작 일시로부터 네 시간 입니다.</p>
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="halfDayOffDateTimePicker" data-target-input="nearest">
+                            <input id="half_day_off_start_at" data-target="#halfDayOffDateTimePicker" type="text" name="half_day_off_start_at"
+                                   class="form-control w-25">
+                            <label for="half_day_off_start_at" class="my-auto mx-1"></label>
+                            <span class="input-group-addon" style="margin-left: 0">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button name="halfDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminOneFourthDayOffForm" action="" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.label == '직원' %}
+                <div class="form-group">
+                    <div>{{ field.label }}</div>
+                    {{ field }}
+                </div>
+            {% elif field.label == '구분' %}
+                <div class="form-group" style="display: none">
+                    <label for="id_cat"></label>
+                    <input id="id_cat" type="text" name="cat" value="4">
+                </div>
+            {% endif %}
+        {% endfor %}
+        <label style="font-weight: bold">시작 일시</label>
+        <p style="font-size: small; color: red">* 반반차는 시작 일시로부터 두 시간 입니다.</p>
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="oneFourthDayOffDateTimePicker" data-target-input="nearest">
+                            <input id="one_fourth_day_off_start_at" data-target="#oneFourthDayOffDateTimePicker" type="text" name="one_fourth_day_off_start_at"
+                                   class="form-control w-25">
+                            <label for="one_fourth_day_off_start_at" class="my-auto mx-1"></label>
+                            <span class="input-group-addon" style="margin-left: 0">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button name="oneFourthDaySubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+
+    <script>
+        $(function () {
+            $('#oneFourthDayOffDateTimePicker').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                stepping: 10,
+                daysOfWeekDisabled: [0, 6],
+            });
+        });
+        $(function () {
+            $('#halfDayOffDateTimePicker').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                stepping: 10,
+                daysOfWeekDisabled: [0, 6],
+            });
+        });
+        const radios = document.getElementsByName("vacationType");
+        const dayOffForm = document.getElementById("adminDayOffForm");
+        const sickDayOffForm = document.getElementById("adminSickDayOffForm");
+        const compDayOffForm = document.getElementById("adminCompDayOffForm");
+        const halfDayOffForm = document.getElementById("adminHalfDayOffForm");
+        const oneFourthDayOffForm = document.getElementById("adminOneFourthDayOffForm");
+        dayOffForm.style.display = "block";
+        sickDayOffForm.style.display = "none";
+        compDayOffForm.style.display = "none";
+        halfDayOffForm.style.display = "none";
+        oneFourthDayOffForm.style.display = "none";
+        for (let i = 0; i < radios.length; i++) {
+            radios[i].onclick = function () {
+                let val = this.value;
+                if (val === "dayOff") {
+                    dayOffForm.style.display = "block";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "sickDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "block";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "compDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "block";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "halfDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "block";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "oneFourthDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "block";
+                }
+            }
+        }
+    </script>
+{% endblock %}

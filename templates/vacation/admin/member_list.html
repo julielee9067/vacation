@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+{% load templatehelpers %}
+
+{% block title %}
+    직원 휴가 내역 조회
+{% endblock %}
+
+{% block content %}
+    <style>
+    .button {
+      border: none;
+      color: white;
+      padding: 5px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+    .button-approved {
+      background-color: white;
+      color: black;
+      border: 1px solid #4CAF50;
+    }
+    .button-approved:hover {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .button-denied {
+      background-color: white;
+      color: black;
+      border: 1px solid #f44336;
+    }
+    .button-edit {
+      background-color: white;
+      color: black;
+      border: 1px solid cornflowerblue;
+    }
+    .button-denied:hover {
+      background-color: #f44336;
+      color: white;
+    }
+    </style>
+    <div class="table-responsive">
+        <form action="" method="get" class="float-right mb-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label for="search" class="input-group-text">직원명</label>
+                </div>
+                <input id="search" type="search" class="form-control" name="member_name"/>
+                <div class="input-group-append">
+                    <button type="submit" class="btn input-group-text"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+        <table class="table table-hover" style="min-width: 600px">
+            <thead class="thead-light">
+            <tr>
+                <th class="text-center">직원명</th>
+                <th class="text-center">휴가 날짜</th>
+                <th class="text-center">기간</th>
+                <th class="text-center">승인 여부</th>
+                <th class="text-center">비고</th>
+                <th class="text-center">수정</th>
+                <th class="text-center">삭제</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for vacation in vacation_list %}
+                    <tr>
+                        <td class="text-center align-middle">
+                            <a href="{% url 'vacation:list' vacation.user.id %}">{{ vacation.user.first_name }}</a>
+                        </td>
+                        <td class="text-center align-middle">
+                            {% if vacation.cat in "1, 2, 5" %}
+                                {{ vacation.start_at|date:"Y-m-d" }} ~
+                                {{ vacation.end_at|date:"Y-m-d" }}
+                            {% else %}
+                                {{ vacation.start_at|date:"Y-m-d" }} {{ vacation.start_at|time:"P" }} ~
+                                {{ vacation.end_at|date:"Y-m-d" }} {{ vacation.end_at|time:"P" }}
+                            {% endif %}
+                        </td>
+                        <td class="text-center align-middle">{% get_duration vacation.start_at vacation.end_at %}</td>
+                        <td class="text-center align-middle">{{ vacation.get_approval_display }}</td>
+                        <td class="text-center align-middle">{{ vacation.get_cat_display }}</td>
+                        <td class="text-center align-middle">
+                            {% if vacation.start_at %}
+                                <form action="{% url 'vacation:admin_update' vacation.id %}" method="post">{% csrf_token %}
+                                    <button name="edit" class="btn btn-default btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td class="text-center align-middle">
+                            {% if vacation.start_at %}
+                                <form action="{% url 'vacation:delete' vacation.id %}" method="post">{% csrf_token %}
+                                    <button name="delete" class="btn btn-default btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,305 @@
+{% extends 'core/base.html' %}
+{% load templatehelpers %}
+
+{% block title %}
+    휴가 수정
+{% endblock %}
+{% block content %}
+    {{ form.media }}
+    <div style="margin-bottom: 10px">
+        <label for="dayOff" style="margin-right: 5px;">연차</label>
+        {% if vacation.cat == "1" %}
+            <input checked id="dayOff" name="vacationType" type="radio" value="dayOff">
+        {% else %}
+            <input id="dayOff" name="vacationType" type="radio" value="dayOff">
+        {% endif %}
+        <label for="dayOff" style="margin-left: 10px; margin-right: 5px">병가</label>
+        {% if vacation.cat == "2" %}
+            <input checked id="dayOff" name="vacationType" type="radio" value="sickDayOff">
+        {% else %}
+            <input id="dayOff" name="vacationType" type="radio" value="sickDayOff">
+        {% endif %}
+        <label for="dayOff" style="margin-left: 10px; margin-right: 5px">대체 휴가</label>
+        {% if vacation.cat == "5" %}
+            <input checked id="dayOff" name="vacationType" type="radio" value="compDayOff">
+        {% else %}
+            <input id="dayOff" name="vacationType" type="radio" value="compDayOff">
+        {% endif %}
+        <label for="halfDayOff" style="margin-left: 10px; margin-right: 5px">반차</label>
+        {% if vacation.cat == "3" %}
+            <input checked type="radio" id="halfDayOff" name="vacationType" value="halfDayOff">
+        {% else %}
+            <input type="radio" id="halfDayOff" name="vacationType" value="halfDayOff">
+        {% endif %}
+        <label for="oneFourthDayOff" style="margin-left: 10px; margin-right: 5px">반반차</label>
+        {% if vacation.cat == "4" %}
+            <input checked type="radio" id="oneFourthDayOff" name="vacationType" value="oneFourthDayOff">
+        {% else %}
+            <input type="radio" id="oneFourthDayOff" name="vacationType" value="oneFourthDayOff">
+        {% endif %}
+    </div>
+    <form id="adminDayOffForm" action="" method="post">{% csrf_token %}
+        <div style="margin-bottom: 10px">
+            {% if form.instance.approval != "1" %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input checked id="id_approval" name="approval" type="radio" value="2">
+            {% else %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input checked id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input id="id_approval" name="approval" type="radio" value="2">
+            {% endif %}
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_cat"></label>
+            <input id="id_cat" type="text" name="cat" value="1">
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_user"></label>
+            <input id="id_user" type="text" name="user" value="{{ user.id }}">
+        </div>
+        <div class="d-flex flex-wrap mb-3">
+            <input id="day_off_start_at" type="date" value="{{ form.instance.start_at | date_format }}"
+                   name="day_off_start_at" class="form-control w-25">
+            <label for="day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="day_off_end_at" type="date" value="{{ form.instance.end_at | date_format }}"
+                   name="day_off_end_at" class="form-control w-25">
+            <label for="day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="dayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminSickDayOffForm" action="" method="post">{% csrf_token %}
+        <div style="margin-bottom: 10px">
+            {% if form.instance.approval != "1" %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input checked id="id_approval" name="approval" type="radio" value="2">
+            {% else %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input checked id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input id="id_approval" name="approval" type="radio" value="2">
+            {% endif %}
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_cat"></label>
+            <input id="id_cat" type="text" name="cat" value="2">
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_user"></label>
+            <input id="id_user" type="text" name="user" value="{{ user.id }}">
+        </div>
+        <div class="d-flex flex-wrap mb-3">
+            <input id="sick_day_off_start_at" type="date" value="{{ form.instance.start_at | date_format }}"
+                   name="sick_day_off_start_at" class="form-control w-25">
+            <label for="sick_day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="sick_day_off_end_at" type="date" value="{{ form.instance.end_at | date_format }}"
+                   name="sick_day_off_end_at" class="form-control w-25">
+            <label for="sick_day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="sickDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminCompDayOffForm" action="" method="post">{% csrf_token %}
+        <div style="margin-bottom: 10px">
+            {% if form.instance.approval != "1" %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input checked id="id_approval" name="approval" type="radio" value="2">
+            {% else %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input checked id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input id="id_approval" name="approval" type="radio" value="2">
+            {% endif %}
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_cat"></label>
+            <input id="id_cat" type="text" name="cat" value="5">
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_user"></label>
+            <input id="id_user" type="text" name="user" value="{{ user.id }}">
+        </div>
+        <div class="d-flex flex-wrap mb-3">
+            <input id="comp_day_off_start_at" type="date" value="{{ form.instance.start_at | date_format }}"
+                   name="comp_day_off_start_at" class="form-control w-25">
+            <label for="comp_day_off_start_at" class="my-auto mx-1">부터</label>
+            <input id="comp_day_off_end_at" type="date" value="{{ form.instance.end_at | date_format }}"
+                   name="comp_day_off_end_at" class="form-control w-25">
+            <label for="comp_day_off_end_at" class="my-auto mx-1">까지</label>
+        </div>
+        <button name="compDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminHalfDayOffForm" action="" method="post">{% csrf_token %}
+        <div style="margin-bottom: 10px">
+            {% if form.instance.approval != "1" %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input checked id="id_approval" name="approval" type="radio" value="2">
+            {% else %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input checked id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input id="id_approval" name="approval" type="radio" value="2">
+            {% endif %}
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_cat"></label>
+            <input id="id_cat" type="text" name="cat" value="3">
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_user"></label>
+            <input id="id_user" type="text" name="user" value="{{ user.id }}">
+        </div>
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="halfDayOffDateTimePicker" data-target-input="nearest">
+                            <input id="half_day_off_start_at" data-target="#halfDayOffDateTimePicker" type="text"
+                                   name="half_day_off_start_at" class="form-control">
+                            <label for="half_day_off_start_at" class="my-auto mx-1"></label>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar">
+                            </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button name="halfDayOffSubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <form id="adminOneFourthDayOffForm" action="" method="post">{% csrf_token %}
+        <div style="margin-bottom: 10px">
+            {% if form.instance.approval != "1" %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input checked id="id_approval" name="approval" type="radio" value="2">
+            {% else %}
+                <label for="id_approval" style="margin-right: 5px;">승인</label>
+                <input checked id="id_approval" name="approval" type="radio" value="1">
+                <label for="id_approval" style="margin-left: 10px; margin-right: 5px">거부</label>
+                <input id="id_approval" name="approval" type="radio" value="2">
+            {% endif %}
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_cat"></label>
+            <input id="id_cat" type="text" name="cat" value="4">
+        </div>
+        <div class="form-group" style="display: none">
+            <label for="id_user"></label>
+            <input id="id_user" type="text" name="user" value="{{ user.id }}">
+        </div>
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="oneFourthDayOffDateTimePicker" data-target-input="nearest">
+                            <input id="one_fourth_day_off_start_at" data-target="#oneFourthDayOffDateTimePicker"
+                                   type="text" name="one_fourth_day_off_start_at"
+                                   class="form-control w-25">
+                            <label for="one_fourth_day_off_start_at" class="my-auto mx-1"></label>
+                            <span class="input-group-addon" style="margin-left: 0">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button name="oneFourthDaySubmit" class="btn border btn-primary" type="submit">제출</button>
+    </form>
+    <script>
+        const radios = document.getElementsByName("vacationType");
+        const dayOffForm = document.getElementById("adminDayOffForm");
+        const sickDayOffForm = document.getElementById("adminSickDayOffForm");
+        const compDayOffForm = document.getElementById("adminCompDayOffForm");
+        const halfDayOffForm = document.getElementById("adminHalfDayOffForm");
+        const oneFourthDayOffForm = document.getElementById("adminOneFourthDayOffForm");
+        let originalVacationType = "{{ vacation.cat }}";
+        console.log(originalVacationType);
+        dayOffForm.style.display = "none";
+        sickDayOffForm.style.display = "none";
+        compDayOffForm.style.display = "none";
+        halfDayOffForm.style.display = "none";
+        oneFourthDayOffForm.style.display = "none";
+        if (originalVacationType === "1") {
+            dayOffForm.style.display = "block";
+        } else if (originalVacationType === "2") {
+            sickDayOffForm.style.display = "block";
+        } else if (originalVacationType === "3") {
+            halfDayOffForm.style.display = "block";
+        } else if (originalVacationType === "4") {
+            oneFourthDayOffForm.style.display = "block";
+        } else if (originalVacationType === "5") {
+            compDayOffForm.style.display = "block";
+        }
+
+        for (let i = 0; i < radios.length; i++) {
+            radios[i].onclick = function () {
+                let val = this.value;
+                if (val === "dayOff") {
+                    dayOffForm.style.display = "block";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "sickDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "block";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "compDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "block";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "halfDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "block";
+                    oneFourthDayOffForm.style.display = "none";
+                } else if (val === "oneFourthDayOff") {
+                    dayOffForm.style.display = "none";
+                    sickDayOffForm.style.display = "none";
+                    compDayOffForm.style.display = "none";
+                    halfDayOffForm.style.display = "none";
+                    oneFourthDayOffForm.style.display = "block";
+                }
+            }
+        }
+        let startAt = '{{ form.instance.start_at|date:"Y-m-d" }} {{ vacation.start_at|time:"H:i" }}';
+        $(function () {
+            $('#halfDayOffDateTimePicker').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                stepping: 10,
+                daysOfWeekDisabled: [0, 6],
+                keepOpen: true,
+                ignoreReadonly: true,
+                defaultDate: startAt,
+            }).date();
+        });
+        $(function () {
+            $('#oneFourthDayOffDateTimePicker').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                stepping: 10,
+                daysOfWeekDisabled: [0, 6],
+                keepOpen: true,
+                ignoreReadonly: true,
+                defaultDate: startAt,
+            }).date();
+        });
+    </script>
+{% endblock %}

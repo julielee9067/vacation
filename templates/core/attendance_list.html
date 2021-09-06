@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% load templatehelpers %}
+{% load widget_tweaks %}
+
+{% block title %}
+    나의 출근기록
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">날짜</th>
+            <th scope="col">출근</th>
+            <th scope="col">퇴근</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for attendance in object_list %}
+            <tr>
+                <th scope="row">{{ attendance.id }}</th>
+                <td>{{ attendance.date }}</td>
+                <td>{{ attendance.start_at }}</td>
+                <td>{{ attendance.end_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

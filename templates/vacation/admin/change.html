@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load templatehelpers %}
+
+{% block title %}
+    직원 휴가 개수 변경
+{% endblock %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-hover" style="min-width: 600px">
+            <thead class="thead-light">
+            <tr>
+                <th class="text-center">직원명</th>
+                <th class="text-center">총 휴가</th>
+                <th class="text-center">사용한 휴가</th>
+                <th class="text-center">사용가능한 휴가</th>
+                <th class="text-center">변경하기</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in user_list %}
+                <tr>
+                    <td class="text-center align-middle">{{ user.first_name }}</td>
+                    <td class="text-center align-middle" id="total_{{ user.id }}">{{ user.profile.total_days }}</td>
+                    <td class="text-center align-middle">{{ user.profile.used_days }}</td>
+                    <td class="text-center align-middle" id="available_{{ user.id }}">{{ user.profile.available_days }}</td>
+                    <td class="text-center align-middle" style="width: 20%;">
+                        <form action="{% url 'vacation:vacation_update' user.id %}" method="post">{% csrf_token %}
+                            <div class="input-group">
+                                <label for="{{ user.id }}"></label>
+                                <input id="{{ user.id }}" type="number" class="form-control" name="total_days" min="1"
+                                                                          value="{{ user.profile.total_days }}" />
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn input-group-text">변경</button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
